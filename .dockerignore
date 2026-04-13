@@ -1,0 +1,8 @@
+.git
+.github
+.claude
+.vscode
+.idea
+*.md
+!README.md
+LICENSE
