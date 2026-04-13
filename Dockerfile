@@ -21,4 +21,5 @@ USER 65534
 
 WORKDIR /workspace
 
-ENTRYPOINT ["/grepai", "watch", "--no-ui", "--auto-init"]
+ENTRYPOINT ["/grepai"]
+CMD ["watch", "--no-ui"]

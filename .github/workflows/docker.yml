@@ -36,36 +36,6 @@ jobs:
       - name: Test - binary runs
         run: docker run --rm --entrypoint /grepai grepai-test version
 
-      - name: Test - config generation with defaults
-        run: |
-          mkdir -p /tmp/grepai-test-default && sudo chown 65534:65534 /tmp/grepai-test-default
-          docker run --rm -v /tmp/grepai-test-default:/workspace grepai-test || true
-          sudo grep 'provider: ollama' /tmp/grepai-test-default/.grepai/config.yaml
-
-      - name: Test - config generation with env vars
-        run: |
-          mkdir -p /tmp/grepai-test-env && sudo chown 65534:65534 /tmp/grepai-test-env
-          docker run --rm \
-            -v /tmp/grepai-test-env:/workspace \
-            -e GREPAI_PROVIDER=openai \
-            -e GREPAI_MODEL=text-embedding-3-large \
-            -e GREPAI_API_KEY=sk-test \
-            -e GREPAI_BACKEND=postgres \
-            grepai-test || true
-          sudo grep 'provider: openai' /tmp/grepai-test-env/.grepai/config.yaml
-          sudo grep 'text-embedding-3-large' /tmp/grepai-test-env/.grepai/config.yaml
-
-      - name: Test - config not overwritten (idempotent)
-        run: |
-          mkdir -p /tmp/grepai-test-idem/.grepai
-          echo -e "version: 1\ncustom: true" > /tmp/grepai-test-idem/.grepai/config.yaml
-          sudo chown -R 65534:65534 /tmp/grepai-test-idem
-          docker run --rm \
-            -v /tmp/grepai-test-idem:/workspace \
-            -e GREPAI_PROVIDER=openai \
-            grepai-test || true
-          sudo grep 'custom: true' /tmp/grepai-test-idem/.grepai/config.yaml
-
       - name: Test - image size < 50MB
         run: |
           SIZE=$(docker image inspect grepai-test --format='{{.Size}}')

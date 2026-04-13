@@ -32,11 +32,8 @@ services:
   grepai:
     image: ghcr.io/greite/grepai-docker:latest
     # build: .  # Uncomment to build locally
-    environment:
-      - GREPAI_PROVIDER=ollama
-      - GREPAI_ENDPOINT=http://host.docker.internal:11434
     volumes:
-      - ./:/workspace
+      - ./:/workspace  # Must contain .grepai/config.yaml
     profiles:
       - watch
 
