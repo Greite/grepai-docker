@@ -52,15 +52,12 @@ jobs:
       - name: Resolve grepai version
         id: version
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.grepai_version }}" ]; then
             echo "grepai_version=${{ github.event.inputs.grepai_version }}" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event_name }}" = "schedule" ]; then
-            # Fetch latest release tag from upstream
+          else
+            # Always fetch latest release tag from upstream
             LATEST=$(curl -sL https://api.github.com/repos/yoanbernabeu/grepai/releases/latest | jq -r .tag_name)
             echo "grepai_version=${LATEST}" >> "$GITHUB_OUTPUT"
-          else
-            # Tag push: use the tag name as version
-            echo "grepai_version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up QEMU
