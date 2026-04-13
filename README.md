@@ -1,6 +1,6 @@
 # grepai-docker
 
-Unofficial Docker image for [grepai](https://github.com/yoanbernabeu/grepai) — semantic code search CLI.
+Unofficial Docker image for [grepai](https://github.com/yoanbernabeu/grepai) - semantic code search CLI.
 
 Uses a `FROM scratch` image (~30MB) containing only the static binary and CA certificates.
 
@@ -13,7 +13,7 @@ The project must have a `.grepai/config.yaml` before starting the container. Gen
 grepai init
 ```
 
-Or create it manually — see [configuration docs](https://github.com/yoanbernabeu/grepai#configuration).
+Or create it manually - see [configuration docs](https://github.com/yoanbernabeu/grepai#configuration).
 
 ## Quick Start
 
