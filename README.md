@@ -34,11 +34,41 @@ docker run --rm ghcr.io/greite/grepai-docker version
 
 ## Docker Compose
 
-```bash
-docker compose --profile=watch up
+```yaml
+services:
+  grepai:
+    image: ghcr.io/greite/grepai-docker:latest
+    volumes:
+      - ./:/workspace  # Must contain .grepai/config.yaml
+
+  # Optional: PostgreSQL with pgvector
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: grepai
+      POSTGRES_PASSWORD: grepai
+      POSTGRES_DB: grepai
+    volumes:
+      - grepai-pgdata:/var/lib/postgresql/data
+
+  # Optional: Qdrant vector database
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - grepai-qdrant:/qdrant/storage
+
+volumes:
+  grepai-pgdata:
+  grepai-qdrant:
 ```
 
-See `compose.yaml` for examples with PostgreSQL and Qdrant backends.
+```bash
+docker compose up grepai
+```
+
+See `compose.yaml` for the full configuration with profiles and healthchecks.
 
 ## Build Locally
 
